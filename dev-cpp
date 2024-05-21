@@ -23,15 +23,15 @@ void DisableOpenGL (HWND hWnd, HDC hDC, HGLRC hRC);
  *
  **************************/
 
-int WINAPI WinMain (HINSTANCE hInstance,
-                    HINSTANCE hPrevInstance,
-                    LPSTR lpCmdLine,
-                    int iCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance,
+                   HINSTANCE hPrevInstance,
+                   LPSTR lpCmdLine,
+                   int iCmdShow)
 {
     WNDCLASS wc;
     HWND hWnd;
     HDC hDC;
-    HGLRC hRC;        
+    HGLRC hRC;
     MSG msg;
     BOOL bQuit = FALSE;
     float theta = 0.0f;
@@ -42,28 +42,28 @@ int WINAPI WinMain (HINSTANCE hInstance,
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hInstance = hInstance;
-    wc.hIcon = LoadIcon (NULL, IDI_APPLICATION);
-    wc.hCursor = LoadCursor (NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH) GetStockObject (BLACK_BRUSH);
+    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     wc.lpszMenuName = NULL;
     wc.lpszClassName = "GLSample";
-    RegisterClass (&wc);
+    RegisterClass(&wc);
 
     /* create main window */
-    hWnd = CreateWindow (
-      "GLSample", "OpenGL Sample", 
-      WS_CAPTION | WS_POPUPWINDOW | WS_VISIBLE,
-      0, 0, 512, 512,
-      NULL, NULL, hInstance, NULL);
+    hWnd = CreateWindow(
+        "GLSample", "OpenGL Sample",
+        WS_CAPTION | WS_POPUPWINDOW | WS_VISIBLE,
+        0, 0, 512, 512,
+        NULL, NULL, hInstance, NULL);
 
     /* enable OpenGL for the window */
-    EnableOpenGL (hWnd, &hDC, &hRC);
+    EnableOpenGL(hWnd, &hDC, &hRC);
 
     /* program main loop */
     while (!bQuit)
     {
         /* check for messages */
-        if (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
+        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
         {
             /* handle or dispatch messages */
             if (msg.message == WM_QUIT)
@@ -72,88 +72,86 @@ int WINAPI WinMain (HINSTANCE hInstance,
             }
             else
             {
-                TranslateMessage (&msg);
-                DispatchMessage (&msg);
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
             }
         }
         else
         {
             /* OpenGL animation code goes here */
-
-            glClearColor (0.0f, 0.0f, 0.0f, 0.0f);
-            glClear (GL_COLOR_BUFFER_BIT);
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             glPushMatrix();
-glRotatef(theta, 1.0f, 1.0f, 1.0f);
+            glRotatef(theta, 1.0f, 1.0f, 1.0f);
 
-// Front face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);  // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);   // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.5f, 0.5f, 0.5f);    // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.5f, 0.5f, 0.5f);   // 왼쪽 위
-glEnd();
+            // 피라미드 그리기
+            glBegin(GL_TRIANGLES);
 
-// Back face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f); // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.5f, -0.5f, -0.5f);  // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.5f, 0.5f, -0.5f);   // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.5f, 0.5f, -0.5f);  // 왼쪽 위
-glEnd();
+            // 앞면
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.5f, 0.0f);  // 꼭짓점
+            glColor3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(-0.5f, -0.5f, 0.5f); // 왼쪽 아래
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(0.5f, -0.5f, 0.5f);  // 오른쪽 아래
 
-// Left face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);  // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f); // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(-0.5f, 0.5f, -0.5f);  // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.5f, 0.5f, 0.5f);   // 왼쪽 위
-glEnd();
+            // 오른쪽 면
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.5f, 0.0f);  // 꼭짓점
+            glColor3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(0.5f, -0.5f, 0.5f);  // 왼쪽 아래
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(0.5f, -0.5f, -0.5f); // 오른쪽 아래
 
-// Right face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);   // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.5f, -0.5f, -0.5f);  // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.5f, 0.5f, -0.5f);   // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(0.5f, 0.5f, 0.5f);    // 왼쪽 위
-glEnd();
+            // 왼쪽 면
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.5f, 0.0f);  // 꼭짓점
+            glColor3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(-0.5f, -0.5f, -0.5f); // 왼쪽 아래
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(-0.5f, -0.5f, 0.5f);  // 오른쪽 아래
 
-// Top face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.5f, 0.5f, 0.5f);   // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.5f, 0.5f, 0.5f);    // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.5f, 0.5f, -0.5f);   // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.5f, 0.5f, -0.5f);  // 왼쪽 위
-glEnd();
+            // 뒷면
+            glColor3f(1.0f, 0.0f, 0.0f);
+            glVertex3f(0.0f, 0.5f, 0.0f);  // 꼭짓점
+            glColor3f(0.0f, 1.0f, 0.0f);
+            glVertex3f(0.5f, -0.5f, -0.5f);  // 왼쪽 아래
+            glColor3f(0.0f, 0.0f, 1.0f);
+            glVertex3f(-0.5f, -0.5f, -0.5f); // 오른쪽 아래
 
-// Bottom face
-glBegin(GL_QUADS);
-glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);  // 왼쪽 아래
-glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);   // 오른쪽 아래
-glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.5f, -0.5f, -0.5f);  // 오른쪽 위
-glColor3f(1.0f, 1.0f, 0.0f); glVertex3f(-0.5f, -0.5f, -0.5f); // 왼쪽 위
-glEnd();
+            glEnd();
 
-glPopMatrix();
+            // 바닥면
+            glBegin(GL_QUADS);
+            glColor3f(1.0f, 1.0f, 0.0f);
+            glVertex3f(-0.5f, -0.5f, 0.5f);  // 왼쪽 위
+            glColor3f(1.0f, 0.0f, 1.0f);
+            glVertex3f(0.5f, -0.5f, 0.5f);   // 오른쪽 위
+            glColor3f(0.0f, 1.0f, 1.0f);
+            glVertex3f(0.5f, -0.5f, -0.5f);  // 오른쪽 아래
+            glColor3f(1.0f, 1.0f, 1.0f);
+            glVertex3f(-0.5f, -0.5f, -0.5f); // 왼쪽 아래
+            glEnd();
 
+            glPopMatrix();
 
-
-
-            SwapBuffers (hDC);
+            SwapBuffers(hDC);
 
             theta += 1.0f;
-            Sleep (1);
+            Sleep(1);
         }
     }
 
     /* shutdown OpenGL */
-    DisableOpenGL (hWnd, hDC, hRC);
+    DisableOpenGL(hWnd, hDC, hRC);
 
     /* destroy the window explicitly */
-    DestroyWindow (hWnd);
+    DestroyWindow(hWnd);
 
     return msg.wParam;
 }
+
 
 
 /********************
