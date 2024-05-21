@@ -62,6 +62,14 @@ void Cquiz23View::OnDraw(CDC* pDC)
 	pDC->Rectangle(pnt.x-150, pnt.y-150, pnt.x+150, pnt.y+150);
 	pDC->Ellipse(pnt.x-150, pnt.y-150, pnt.x+150, pnt.y+150);
 	pDC->TextOutW(pnt.x-30, pnt.y, L"Hello ANU");
+	pDC->Arc(pnt.x - 200, pnt.y - 200, pnt.x + 200, pnt.y + 200, pnt.x, pnt.y - 200, pnt.x, pnt.y + 200);
+	CPoint triangle[3];
+    	triangle[0] = CPoint(pnt.x, pnt.y - 100);
+   	triangle[1] = CPoint(pnt.x - 50, pnt.y + 50);
+    	triangle[2] = CPoint(pnt.x + 50, pnt.y + 50);
+   	pDC->Polygon(triangle, 3);
+	pDC->MoveTo(pnt.x - 200, pnt.y);
+   	pDC->LineTo(pnt.x + 200, pnt.y);
 }
 
 
